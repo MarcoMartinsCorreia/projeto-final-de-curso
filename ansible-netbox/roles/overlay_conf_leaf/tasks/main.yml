@@ -1,0 +1,73 @@
+---
+
+- name: 1 - GET ASNs
+  uri:
+      url: "{{ netbox_url }}/api/ipam/asns/?tag=LEIRT"
+      method: GET
+      return_content: yes
+      headers:
+          accept: "application/json"
+          Authorization: "Token {{ netbox_token }}"
+  register: asns
+
+- name: 2 - GET VRFS
+  uri:
+      url: "{{ netbox_url }}/api/ipam/vrfs/?tag=LEIRT"
+      method: GET
+      return_content: yes
+      headers:
+          accept: "application/json"
+          Authorization: "Token {{ netbox_token }}"
+  register: vrfs
+
+- name: 3 - GET L2VPNS
+  uri:
+      url: "{{ netbox_url }}/api/vpn/l2vpns/?tag=LEIRT"
+      method: GET
+      return_content: yes
+      headers:
+          accept: "application/json"
+          Authorization: "Token {{ netbox_token }}"
+  register: l2vpns
+
+- name: 4 - GET L2VPN TERMINATIONS
+  uri:
+      url: "{{ netbox_url }}/api/vpn/l2vpn-terminations/?device={{ inventory_hostname }}"
+      method: GET
+      return_content: yes
+      headers:
+          accept: "application/json"
+          Authorization: "Token {{ netbox_token }}"
+  register: l2vpn_terminations
+
+- name: 5 - GET VLANS
+  uri:
+      url: "{{ netbox_url }}/api/ipam/vlans/?tag=LEIRT"
+      method: GET
+      return_content: yes
+      headers:
+          accept: "application/json"
+          Authorization: "Token {{ netbox_token }}"
+  register: vlans
+
+- name: 6 - CREATE evpn-vxlan CONFIG FILES 
+  template:
+       src: "roles/overlay_conf_leaf/templates/evpn_leaf.j2"
+       dest: "{{ configs_directory }}/{{ inventory_hostname }}/evpn-leaf-{{ inventory_hostname }}.json"
+  register: generated_config_evpn
+    
+- name: 7 - APPLY evpn-vxlan CONFIG TO DEVICES
+  nokia.srlinux.config:
+       update:
+         - path: /
+           value: "{{ lookup('ansible.builtin.template', configs_directory + '/' + inventory_hostname + '/evpn-leaf-' + inventory_hostname + '.json') }}"
+  register: set_result_evpn
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,316 @@
+{
+  "name": "leirt-topology",
+  "type": "clab",
+  "clab": {
+    "config": {
+      "prefix": "clab",
+      "mgmt": {
+        "network": "containerlab-mgmt",
+        "bridge": "br-56f0cdf4c736",
+        "ipv4-subnet": "172.30.20.0/24",
+        "ipv4-gw": "172.30.20.1",
+        "ipv6-gw": "fe80::788c:f6ff:fe4d:1d67",
+        "external-access": true
+      }
+    }
+  },
+  "ssh-pub-keys": [],
+  "nodes": {
+    "lf-11": {
+      "index": "0",
+      "shortname": "lf-11",
+      "longname": "clab-leirt-topology-lf-11",
+      "fqdn": "lf-11.leirt-topology.io",
+      "group": "",
+      "labdir": "/home/leirt-g1/ansible-netbox/clab-leirt-topology/lf-11",
+      "kind": "nokia_srlinux",
+      "image": "ghcr.io/nokia/srlinux",
+      "mgmt-net": "",
+      "mgmt-intf": "",
+      "mgmt-ipv4-address": "172.30.20.12",
+      "mgmt-ipv4-prefix-length": 24,
+      "mgmt-ipv6-address": "",
+      "mgmt-ipv6-prefix-length": 0,
+      "mac-address": "1a:c2:00:00:00:00",
+      "labels": {
+        "clab-mgmt-net-bridge": "br-56f0cdf4c736",
+        "clab-node-group": "",
+        "clab-node-kind": "nokia_srlinux",
+        "clab-node-lab-dir": "/home/leirt-g1/ansible-netbox/clab-leirt-topology/lf-11",
+        "clab-node-longname": "clab-leirt-topology-lf-11",
+        "clab-node-name": "lf-11",
+        "clab-node-type": "ixrd2l",
+        "clab-owner": "leirt-g1",
+        "clab-topo-file": "/home/leirt-g1/ansible-netbox/leirt-topology.clab.yml",
+        "containerlab": "leirt-topology"
+      },
+      "port-bindings": [
+      ]
+    },
+    "lf-12": {
+      "index": "1",
+      "shortname": "lf-12",
+      "longname": "clab-leirt-topology-lf-12",
+      "fqdn": "lf-12.leirt-topology.io",
+      "group": "",
+      "labdir": "/home/leirt-g1/ansible-netbox/clab-leirt-topology/lf-12",
+      "kind": "nokia_srlinux",
+      "image": "ghcr.io/nokia/srlinux",
+      "mgmt-net": "",
+      "mgmt-intf": "",
+      "mgmt-ipv4-address": "172.30.20.13",
+      "mgmt-ipv4-prefix-length": 24,
+      "mgmt-ipv6-address": "",
+      "mgmt-ipv6-prefix-length": 0,
+      "mac-address": "1a:4d:01:00:00:00",
+      "labels": {
+        "clab-mgmt-net-bridge": "br-56f0cdf4c736",
+        "clab-node-group": "",
+        "clab-node-kind": "nokia_srlinux",
+        "clab-node-lab-dir": "/home/leirt-g1/ansible-netbox/clab-leirt-topology/lf-12",
+        "clab-node-longname": "clab-leirt-topology-lf-12",
+        "clab-node-name": "lf-12",
+        "clab-node-type": "ixrd2l",
+        "clab-owner": "leirt-g1",
+        "clab-topo-file": "/home/leirt-g1/ansible-netbox/leirt-topology.clab.yml",
+        "containerlab": "leirt-topology"
+      },
+      "port-bindings": [
+      ]
+    },
+    "mt1": {
+      "index": "2",
+      "shortname": "mt1",
+      "longname": "clab-leirt-topology-mt1",
+      "fqdn": "mt1.leirt-topology.io",
+      "group": "",
+      "labdir": "/home/leirt-g1/ansible-netbox/clab-leirt-topology/mt1",
+      "kind": "linux",
+      "image": "ghcr.io/hellt/network-multitool",
+      "mgmt-net": "",
+      "mgmt-intf": "",
+      "mgmt-ipv4-address": "172.30.20.2",
+      "mgmt-ipv4-prefix-length": 24,
+      "mgmt-ipv6-address": "",
+      "mgmt-ipv6-prefix-length": 0,
+      "mac-address": "",
+      "labels": {
+        "clab-mgmt-net-bridge": "br-56f0cdf4c736",
+        "clab-node-group": "",
+        "clab-node-kind": "linux",
+        "clab-node-lab-dir": "/home/leirt-g1/ansible-netbox/clab-leirt-topology/mt1",
+        "clab-node-longname": "clab-leirt-topology-mt1",
+        "clab-node-name": "mt1",
+        "clab-node-type": "",
+        "clab-owner": "leirt-g1",
+        "clab-topo-file": "/home/leirt-g1/ansible-netbox/leirt-topology.clab.yml",
+        "containerlab": "leirt-topology"
+      },
+      "port-bindings": [
+        {
+          "host-ip": "",
+          "host-port": 0,
+          "port": 443,
+          "protocol": "tcp"
+        },
+        {
+          "host-ip": "",
+          "host-port": 0,
+          "port": 80,
+          "protocol": "tcp"
+        }
+      ]
+    },
+    "mt2": {
+      "index": "3",
+      "shortname": "mt2",
+      "longname": "clab-leirt-topology-mt2",
+      "fqdn": "mt2.leirt-topology.io",
+      "group": "",
+      "labdir": "/home/leirt-g1/ansible-netbox/clab-leirt-topology/mt2",
+      "kind": "linux",
+      "image": "ghcr.io/hellt/network-multitool",
+      "mgmt-net": "",
+      "mgmt-intf": "",
+      "mgmt-ipv4-address": "172.30.20.3",
+      "mgmt-ipv4-prefix-length": 24,
+      "mgmt-ipv6-address": "",
+      "mgmt-ipv6-prefix-length": 0,
+      "mac-address": "",
+      "labels": {
+        "clab-mgmt-net-bridge": "br-56f0cdf4c736",
+        "clab-node-group": "",
+        "clab-node-kind": "linux",
+        "clab-node-lab-dir": "/home/leirt-g1/ansible-netbox/clab-leirt-topology/mt2",
+        "clab-node-longname": "clab-leirt-topology-mt2",
+        "clab-node-name": "mt2",
+        "clab-node-type": "",
+        "clab-owner": "leirt-g1",
+        "clab-topo-file": "/home/leirt-g1/ansible-netbox/leirt-topology.clab.yml",
+        "containerlab": "leirt-topology"
+      },
+      "port-bindings": [
+        {
+          "host-ip": "",
+          "host-port": 0,
+          "port": 443,
+          "protocol": "tcp"
+        },
+        {
+          "host-ip": "",
+          "host-port": 0,
+          "port": 80,
+          "protocol": "tcp"
+        }
+      ]
+    },
+    "sp-13": {
+      "index": "4",
+      "shortname": "sp-13",
+      "longname": "clab-leirt-topology-sp-13",
+      "fqdn": "sp-13.leirt-topology.io",
+      "group": "",
+      "labdir": "/home/leirt-g1/ansible-netbox/clab-leirt-topology/sp-13",
+      "kind": "nokia_srlinux",
+      "image": "ghcr.io/nokia/srlinux",
+      "mgmt-net": "",
+      "mgmt-intf": "",
+      "mgmt-ipv4-address": "172.30.20.14",
+      "mgmt-ipv4-prefix-length": 24,
+      "mgmt-ipv6-address": "",
+      "mgmt-ipv6-prefix-length": 0,
+      "mac-address": "1a:0b:04:00:00:00",
+      "labels": {
+        "clab-mgmt-net-bridge": "br-56f0cdf4c736",
+        "clab-node-group": "",
+        "clab-node-kind": "nokia_srlinux",
+        "clab-node-lab-dir": "/home/leirt-g1/ansible-netbox/clab-leirt-topology/sp-13",
+        "clab-node-longname": "clab-leirt-topology-sp-13",
+        "clab-node-name": "sp-13",
+        "clab-node-type": "ixrd2l",
+        "clab-owner": "leirt-g1",
+        "clab-topo-file": "/home/leirt-g1/ansible-netbox/leirt-topology.clab.yml",
+        "containerlab": "leirt-topology"
+      },
+      "port-bindings": [
+      ]
+    },
+    "sp-14": {
+      "index": "5",
+      "shortname": "sp-14",
+      "longname": "clab-leirt-topology-sp-14",
+      "fqdn": "sp-14.leirt-topology.io",
+      "group": "",
+      "labdir": "/home/leirt-g1/ansible-netbox/clab-leirt-topology/sp-14",
+      "kind": "nokia_srlinux",
+      "image": "ghcr.io/nokia/srlinux",
+      "mgmt-net": "",
+      "mgmt-intf": "",
+      "mgmt-ipv4-address": "172.30.20.15",
+      "mgmt-ipv4-prefix-length": 24,
+      "mgmt-ipv6-address": "",
+      "mgmt-ipv6-prefix-length": 0,
+      "mac-address": "1a:66:05:00:00:00",
+      "labels": {
+        "clab-mgmt-net-bridge": "br-56f0cdf4c736",
+        "clab-node-group": "",
+        "clab-node-kind": "nokia_srlinux",
+        "clab-node-lab-dir": "/home/leirt-g1/ansible-netbox/clab-leirt-topology/sp-14",
+        "clab-node-longname": "clab-leirt-topology-sp-14",
+        "clab-node-name": "sp-14",
+        "clab-node-type": "ixrd2l",
+        "clab-owner": "leirt-g1",
+        "clab-topo-file": "/home/leirt-g1/ansible-netbox/leirt-topology.clab.yml",
+        "containerlab": "leirt-topology"
+      },
+      "port-bindings": [
+      ]
+    }
+  },
+  "links": [
+    {
+      "a": {
+        "node": "mt1",
+        "interface": "eth1",
+        "mac": "aa:c1:ab:9a:a1:16",
+        "peer": "z"
+      },
+      "z": {
+        "node": "lf-11",
+        "interface": "e1-49",
+        "mac": "aa:c1:ab:3a:74:33",
+        "peer": "a"
+      }
+    },
+    {
+      "a": {
+        "node": "mt2",
+        "interface": "eth1",
+        "mac": "aa:c1:ab:a6:e5:a8",
+        "peer": "z"
+      },
+      "z": {
+        "node": "lf-12",
+        "interface": "e1-49",
+        "mac": "aa:c1:ab:3e:7d:31",
+        "peer": "a"
+      }
+    },
+    {
+      "a": {
+        "node": "lf-11",
+        "interface": "e1-1",
+        "mac": "aa:c1:ab:dc:1d:ea",
+        "peer": "z"
+      },
+      "z": {
+        "node": "sp-13",
+        "interface": "e1-1",
+        "mac": "aa:c1:ab:57:d9:6d",
+        "peer": "a"
+      }
+    },
+    {
+      "a": {
+        "node": "lf-11",
+        "interface": "e1-2",
+        "mac": "aa:c1:ab:21:02:ae",
+        "peer": "z"
+      },
+      "z": {
+        "node": "sp-14",
+        "interface": "e1-1",
+        "mac": "aa:c1:ab:ff:56:18",
+        "peer": "a"
+      }
+    },
+    {
+      "a": {
+        "node": "lf-12",
+        "interface": "e1-1",
+        "mac": "aa:c1:ab:c6:a7:09",
+        "peer": "z"
+      },
+      "z": {
+        "node": "sp-13",
+        "interface": "e1-2",
+        "mac": "aa:c1:ab:94:c6:51",
+        "peer": "a"
+      }
+    },
+    {
+      "a": {
+        "node": "lf-12",
+        "interface": "e1-2",
+        "mac": "aa:c1:ab:28:20:c5",
+        "peer": "z"
+      },
+      "z": {
+        "node": "sp-14",
+        "interface": "e1-2",
+        "mac": "aa:c1:ab:c5:a5:0a",
+        "peer": "a"
+      }
+    }
+  ]
+}

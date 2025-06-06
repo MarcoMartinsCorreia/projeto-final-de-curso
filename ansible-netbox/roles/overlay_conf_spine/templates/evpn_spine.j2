@@ -1,0 +1,59 @@
+{# ---
+  Template para gerar a configuração de OVERLAY (EVPN Route Reflector).
+  Este template só gera conteúdo se a variável 'device_role' estiver definida como 'evpn_rr'.
+  O JSON resultante deve ser mesclado com a configuração do underlay.
+--- #}
+{% set ibgp_asn = (asns.json.results | selectattr("description", "search", "ibgp overlay leirt") | map(attribute="asn") | list | first) %}
+{% set local_router_id = devices.json.results | selectattr("role.display", "equalto", "spine") | map(attribute="custom_fields.Router_ID") | list | first %}
+{
+  "network-instance": [
+    {
+      "name": "default",
+      "protocols": {
+        "bgp": {
+          "afi-safi": [
+            {
+              "afi-safi-name": "evpn",
+              "admin-state": "enable"
+            }
+          ],
+          "group": [
+            {
+              "group-name": "ibgp-overlay-rr-clients",
+              "admin-state": "enable",
+              "peer-as": {{ ibgp_asn }},
+              "local-as": {
+                "as-number": {{ ibgp_asn }}
+              },
+              "route-reflector": {
+                "client": true,
+                "cluster-id": "{{ local_router_id }}"
+              },
+              "afi-safi": [
+                {
+                  "afi-safi-name": "ipv4-unicast",
+                  "admin-state": "disable"
+                },
+                {
+                  "afi-safi-name": "evpn",
+                  "admin-state": "enable"
+                }
+              ]
+            }
+          ],
+          "neighbor": [
+            {% for device in all_devices.json.results if device.role.display == "leaf" %}
+            {
+              "peer-address": "{{ device.custom_fields.Router_ID }}",
+              "peer-group": "ibgp-overlay-rr-clients",
+              "transport": {
+                "local-address": "{{ local_router_id }}"
+              }
+            }{% if not loop.last %},{% endif %}
+            {% endfor %}
+          ]
+        }
+      }
+    }
+  ]
+}

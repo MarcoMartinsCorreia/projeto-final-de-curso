@@ -1,0 +1,106 @@
+---
+- name: 1 - GET IP-ADDRESSES OF DEVICES
+  uri:
+      url: "{{ netbox_url }}/api/ipam/ip-addresses/?device={{ inventory_hostname }}"
+      method: GET
+      return_content: yes
+      headers:
+          accept: "application/json"
+          Authorization: "Token {{ netbox_token }}"
+  register: ip_addresses
+
+- name: 2 - GET DEVICES
+  uri:
+      url: "{{ netbox_url }}/api/dcim/devices/?name={{ inventory_hostname }}"
+      method: GET
+      return_content: yes
+      headers:
+          accept: "application/json"
+          Authorization: "Token {{ netbox_token }}"
+  register: devices
+
+- name: 3 - GET ALL DEVICES
+  uri:
+      url: "{{ netbox_url }}/api/dcim/devices/?tag=LEIRT"
+      method: GET
+      return_content: yes
+      headers:
+          accept: "application/json"
+          Authorization: "Token {{ netbox_token }}"
+  register: all_devices
+
+- name: 3 - GET INTERFACES OF DEVICES
+  uri:
+      url: "{{ netbox_url }}/api/dcim/interfaces/?device={{ inventory_hostname }}&limit=0"
+      method: GET
+      return_content: yes
+      headers:
+          accept: "application/json"
+          Authorization: "Token {{ netbox_token }}"
+  register: interfaces
+
+- name: 4 - GET IP PREFIXES
+  uri:
+      url: "{{ netbox_url }}/api/ipam/prefixes"
+      method: GET
+      return_content: yes
+      headers:
+          accept: "application/json"
+          Authorization: "Token {{ netbox_token }}"
+  register: ip_prefix
+
+- name: 5 - CREATE FOLDER FOR DEVICE CONFIGS
+  file:
+    dest: "{{ configs_directory }}/{{ inventory_hostname }}"
+    state: directory
+
+- name: 6 - CREATE eBGP CONFIG FILES 
+  template:
+       src: "roles/underlay_conf/templates/ebgp.j2"
+       dest: "{{ configs_directory }}/{{ inventory_hostname }}/ebgp-{{ inventory_hostname }}.json"
+  register: generated_config_ebgp
+    
+- name: 7 - APPLY EBGP CONFIG TO DEVICES
+  nokia.srlinux.config:
+       update:
+         - path: /
+           value: "{{ lookup('ansible.builtin.template', configs_directory + '/' + inventory_hostname + '/ebgp-' + inventory_hostname + '.json') }}"
+  register: set_result_ebgp
+
+
+# - name: 4 - GET DETAILS OF SITES
+#   uri:
+#       url: "{{ netbox_url }}/api/dcim/sites/?name={{ device.json.results[0]['site']['name'] }}"
+#       method: GET
+#       return_content: yes
+#       headers:
+#           accept: "application/json"
+#           Authorization: "Token {{ netbox_token }}"
+#   register: site
+
+# - name: 5 - GET LIST OF VLANS FOR SITE {{ device.json.results[0]['site']['name'] }}
+#   uri:
+#       url: "{{ netbox_url }}/api/ipam/vlans/?site_id={{ site.json.results[0]['id'] }}"
+#       method: GET
+#       return_content: yes
+#       headers:
+#           accept: "application/json"
+#           Authorization: "Token {{ netbox_token }}"
+#   register: vlans
+#- name: Debug print all the content of IP addresses
+#  debug:
+#    var: ip_addresses
+
+# - name: 6 - CREATE INTERFACES CONFIG FILES 
+#   template:
+#       src: "roles/underlay_conf/templates/interfaces.j2"
+#       dest: "{{ configs_directory }}/{{ inventory_hostname }}/interfaces-{{ inventory_hostname }}.json"
+#   register: generated_config_interfaces
+
+# - name: 7 - APPLY INTERFACE CONFIG TO DEVICES
+#   nokia.srlinux.config:
+#     update:
+#       - path: /
+#         value: "{{ lookup('ansible.builtin.template', configs_directory + '/' + inventory_hostname + '/interfaces-' + inventory_hostname + '.json') }}"
+#   register: set_result_interfaces
+

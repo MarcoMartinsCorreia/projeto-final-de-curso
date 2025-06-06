@@ -1,0 +1,40 @@
+{
+  "interface": [
+    {% for ip in ip_addresses.json.results if ip.assigned_object.name != "mgmt0" %}
+    {
+      "name": "{{ ip.assigned_object.name }}",
+      "description": "{{ ip.assigned_object.name }} interface on {{ inventory_hostname }} node",
+      "admin-state": "enable",
+      "subinterface": [
+        {
+          "index": 0,
+          "admin-state": "enable",
+          "ipv4": {
+            "admin-state": "enable",
+            "address": [
+              {
+                "ip-prefix": "{{ ip.address }}"
+              }
+            ]
+          }
+        }
+      ]
+    }{% if not loop.last %},{% endif %}
+    {% endfor %}
+  ],
+  "network-instance": [
+    {% for ip in ip_addresses.json.results if ip.assigned_object.name != "mgmt0" %}
+    {
+      "name": "default",
+      "interface": [
+        {
+          "name": "{{ ip.assigned_object.name }}"
+        }
+      ]
+    }{% if not loop.last %},{% endif %}
+    {% endfor %}
+  ]
+}
+
+
+

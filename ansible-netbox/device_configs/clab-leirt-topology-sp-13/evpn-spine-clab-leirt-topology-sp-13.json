@@ -1,0 +1,55 @@
+{
+  "network-instance": [
+    {
+      "name": "default",
+      "protocols": {
+        "bgp": {
+          "afi-safi": [
+            {
+              "afi-safi-name": "evpn",
+              "admin-state": "enable"
+            }
+          ],
+          "group": [
+            {
+              "group-name": "ibgp-overlay-rr-clients",
+              "admin-state": "enable",
+              "peer-as": 65535,
+              "local-as": {
+                "as-number": 65535
+              },
+              "route-reflector": {
+                "client": true,
+                "cluster-id": "10.0.0.13"
+              },
+              "afi-safi": [
+                {
+                  "afi-safi-name": "ipv4-unicast",
+                  "admin-state": "disable"
+                },
+                {
+                  "afi-safi-name": "evpn",
+                  "admin-state": "enable"
+                }
+              ]
+            }
+          ],
+          "neighbor": [
+                        {
+              "peer-address": "10.0.0.11",
+              "peer-group": "ibgp-overlay-rr-clients",
+              "transport": {
+                "local-address": "10.0.0.13"
+              }
+            },                        {
+              "peer-address": "10.0.0.12",
+              "peer-group": "ibgp-overlay-rr-clients",
+              "transport": {
+                "local-address": "10.0.0.13"
+              }
+            }                      ]
+        }
+      }
+    }
+  ]
+}

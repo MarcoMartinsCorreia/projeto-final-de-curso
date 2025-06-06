@@ -1,0 +1,81 @@
+COMANDOS DEMO
+
+ansible-inventory --list -i netbox_inventory.yml
+ansible-playbook -i netbox_inventory.yml playbook.yml 
+
+
+/ show network-instance default route-table
+/ show network-instance default protocols bgp neighbor
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ll
+cd clab-quickstart
+more --nome-do-lab--
+sudo clab inspect -a // mostrar o que está a correr no servidor
+
+sudo clab destroy -t  --nome-do-lab--// se os labs tiverem "exited"
+sudo clab deploy --nome-do-lab--
+
+sudo docker ps // contentores a correr
+sudo docker compose start // caso vá abaixo
+
+/*
+    SR_LINUX  LOGIN
+        user: admin
+        pass: NokiaSrl1!
+*/
+
+/* VER INVENTARIO DO NETBOX ---------------------------------------------------------
+cd ansible-netbox
+source bin/activate -- environment
+ansible-inventory --list -i netbox_inventory.yml
+*/
+
+/*
+    comando para executar a topologia
+    containerlab deploy -t topology.yml
+*/
+
+
+ansible-playbook -i netbox_inventory.yml playbook.yml 
+
+
+
+
+caso netbox va abaixo
+cd netbox-docker
+sudo docker compose start
+
+
+entrar dentro de um cliente
+sudo docker exec -it <nome-do-client> bash
+
+
+
+/ show network-instance default protocols bgp neighbor
+/ show network-instance default route-table
+/ show network-instance default protocols bgp neighbor 10.*
+
+/ show network-instance vrf-1 bridge-table mac-table all
+/show network-instance default protocols bgp neighbor 10.0.0.12
+
+

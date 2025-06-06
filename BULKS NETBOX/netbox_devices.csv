@@ -1,0 +1,8 @@
+name,status,tenant,site,location,rack,role,manufacturer,device_type,tags,cf_DEVICE_ASN
+clab-leirt-topology-lf-11,active,,ISEL,LEIRT_DC1,,leaf,Nokia,7220 IXR-D2 25/100GE,LEIRT,4200000111
+clab-leirt-topology-lf-12,active,,ISEL,LEIRT_DC1,,leaf,Nokia,7220 IXR-D2 25/100GE,LEIRT,4200000112
+clab-leirt-topology-sp-13,active,,ISEL,LEIRT_DC1,,spine,Nokia,7220 IXR-D3 32*100GE,LEIRT,4200000100
+clab-leirt-topology-sp-14,active,,ISEL,LEIRT_DC1,,spine,Nokia,7220 IXR-D3 32*100GE,LEIRT,4200000100
+
+
+

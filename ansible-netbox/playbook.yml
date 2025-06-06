@@ -1,0 +1,22 @@
+---
+# descomentar -> command - shift - 7
+- name: PLAY 1 - UNDERLAY CONFIG
+  hosts: all
+  gather_facts: false
+
+  roles:
+    - role: underlay_conf
+
+- name: PLAY 2 - OVERLAY CONFIG LEAFS
+  hosts: device_roles_leaf
+  gather_facts: false
+
+  roles:
+    - role: overlay_conf_leaf
+
+- name: PLAY 3 - OVERLAY CONFIG SPINES
+  hosts: device_roles_spine
+  gather_facts: false
+
+  roles:
+    - role: overlay_conf_spine

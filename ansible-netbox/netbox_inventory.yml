@@ -1,0 +1,11 @@
+plugin: netbox.netbox.nb_inventory
+api_endpoint: http://127.0.0.1:8001
+token: 630abadce8cdd1b35325814c2b18744fc9774d62
+validate_certs: false
+config_context: false
+query_filters:
+  - tag: LEIRT
+group_by:
+  - manufacturers  
+  - device_roles  
+

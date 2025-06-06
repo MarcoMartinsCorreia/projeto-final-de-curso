@@ -1,0 +1,7 @@
+side_a_device,side_a_type,side_a_name,side_b_device,side_b_name,side_b_type,tags
+clab-leirt-topology-lf-11,dcim.interface,ethernet-1/1,clab-leirt-topology-sp-13,ethernet-1/1,dcim.interface,LEIRT
+clab-leirt-topology-lf-12,dcim.interface,ethernet-1/1,clab-leirt-topology-sp-13,ethernet-1/2,dcim.interface,LEIRT
+clab-leirt-topology-lf-11,dcim.interface,ethernet-1/2,clab-leirt-topology-sp-14,ethernet-1/1,dcim.interface,LEIRT
+clab-leirt-topology-lf-12,dcim.interface,ethernet-1/2,clab-leirt-topology-sp-14,ethernet-1/2,dcim.interface,LEIRT
+
+

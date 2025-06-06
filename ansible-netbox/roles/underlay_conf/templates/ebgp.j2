@@ -1,0 +1,130 @@
+{
+  "interface": [
+    {# --- Primeiro adicionar o system0 (pq está numa variável diferente) --- #}
+    {% for ip in ip_addresses.json.results if ip.assigned_object.name == "system0" %}
+    {
+      "name": "system0",
+      "description": "system0 interface on {{ inventory_hostname }} node",
+      "admin-state": "enable",
+      "subinterface": [
+        {
+          "index": 0,
+          "admin-state": "enable",
+          "ipv4": {
+            "admin-state": "enable",
+            "address": [
+              {
+                "ip-prefix": "{{ ip.address }}"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {% endfor %}
+
+    {# --- Depois adicionar as outras interfaces --- #}
+    {% for interface in interfaces.json.results if interface.custom_fields.PEER_AS != none %}
+    {
+      "name": "{{ interface.display }}",
+      "description": "{{ interface.display }} interface on {{ inventory_hostname }} node",
+      "admin-state": "enable",
+      "subinterface": [
+        {
+          "index": 0,
+          "admin-state": "enable",
+          "ipv6": {
+            "admin-state": "enable",
+            "router-advertisement": {
+              "router-role": {
+                "admin-state": "enable"
+              }
+            }
+          }
+        }
+      ]
+    }{% if not loop.last %},{% endif %}
+    {% endfor %}
+  ],
+
+  "routing-policy": {
+    "prefix-set": [
+      {
+        "name": "system-loopbacks",
+        "prefix": [
+          {
+            "ip-prefix": "{{ ip_prefix.json.results[0].display }}",
+            "mask-length-range": "32..32"
+          }
+        ]
+      }
+    ],
+    "policy": [
+      {
+        "name": "system-loopbacks-policy",
+        "statement": [
+          {
+            "name": "1",
+            "match": {
+              "prefix-set": "system-loopbacks"
+            },
+            "action": {
+              "policy-result": "accept"
+            }
+          }
+        ]
+      }
+    ]
+  },
+
+  "network-instance": [
+    {
+      "name": "default",
+      "interface": [
+        {
+          "name": "system0.0"
+        },
+        {% for interface in interfaces.json.results if interface.custom_fields.PEER_AS != none %}
+        {
+          "name": "{{ interface.display }}.0"
+        }{% if not loop.last %},{% endif %}
+        {% endfor %}
+      ],
+      "protocols": {
+        "bgp": {
+          "admin-state": "enable",
+          "autonomous-system": {{ devices.json.results[0].custom_fields.DEVICE_ASN }},
+          "router-id": "{{ devices.json.results[0].custom_fields.Router_ID }}",
+          "afi-safi": [
+            {
+              "afi-safi-name": "ipv4-unicast",
+              "admin-state": "enable"
+            }
+          ],
+          "dynamic-neighbors": {
+            "interface": [
+              {% for interface in interfaces.json.results if interface.custom_fields.PEER_AS != none %}
+              {
+                "interface-name": "{{ interface.display }}.0",
+                "peer-group": "underlay",
+                "allowed-peer-as": [{{ interface.custom_fields.PEER_AS }}]
+              }{% if not loop.last %},{% endif %}
+              {% endfor %}
+            ]
+          },
+          "group": [
+            {
+              "group-name": "underlay",
+              "admin-state": "enable",
+              "export-policy": "system-loopbacks-policy",
+              "import-policy": "system-loopbacks-policy"
+            }
+          ]
+        }
+      },
+      "ip-forwarding": {
+        "receive-ipv4-check": false
+      }
+    }
+  ]
+}

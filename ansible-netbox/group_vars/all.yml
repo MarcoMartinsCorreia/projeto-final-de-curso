@@ -1,0 +1,10 @@
+netbox_url: "http://127.0.0.1:8001"
+netbox_token: "5311fa2c10aebddb310dbec024b0a5a97d703824"
+configs_directory: "/home/leirt-g1/ansible-netbox/device_configs"
+ansible_network_os: nokia.srlinux.srlinux
+ansible_connection: ansible.netcommon.httpapi
+ansible_user: admin
+ansible_password: NokiaSrl1! 
+ansible_httpapi_port: 443
+ansible_httpapi_use_ssl: true
+ansible_httpapi_validate_certs: false

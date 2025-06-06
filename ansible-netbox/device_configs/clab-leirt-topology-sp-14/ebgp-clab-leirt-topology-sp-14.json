@@ -1,0 +1,141 @@
+{
+  "interface": [
+            {
+      "name": "system0",
+      "description": "system0 interface on clab-leirt-topology-sp-14 node",
+      "admin-state": "enable",
+      "subinterface": [
+        {
+          "index": 0,
+          "admin-state": "enable",
+          "ipv4": {
+            "admin-state": "enable",
+            "address": [
+              {
+                "ip-prefix": "10.0.0.14/32"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    
+            {
+      "name": "ethernet-1/1",
+      "description": "ethernet-1/1 interface on clab-leirt-topology-sp-14 node",
+      "admin-state": "enable",
+      "subinterface": [
+        {
+          "index": 0,
+          "admin-state": "enable",
+          "ipv6": {
+            "admin-state": "enable",
+            "router-advertisement": {
+              "router-role": {
+                "admin-state": "enable"
+              }
+            }
+          }
+        }
+      ]
+    },        {
+      "name": "ethernet-1/2",
+      "description": "ethernet-1/2 interface on clab-leirt-topology-sp-14 node",
+      "admin-state": "enable",
+      "subinterface": [
+        {
+          "index": 0,
+          "admin-state": "enable",
+          "ipv6": {
+            "admin-state": "enable",
+            "router-advertisement": {
+              "router-role": {
+                "admin-state": "enable"
+              }
+            }
+          }
+        }
+      ]
+    }      ],
+
+  "routing-policy": {
+    "prefix-set": [
+      {
+        "name": "system-loopbacks",
+        "prefix": [
+          {
+            "ip-prefix": "10.0.0.0/8",
+            "mask-length-range": "32..32"
+          }
+        ]
+      }
+    ],
+    "policy": [
+      {
+        "name": "system-loopbacks-policy",
+        "statement": [
+          {
+            "name": "1",
+            "match": {
+              "prefix-set": "system-loopbacks"
+            },
+            "action": {
+              "policy-result": "accept"
+            }
+          }
+        ]
+      }
+    ]
+  },
+
+  "network-instance": [
+    {
+      "name": "default",
+      "interface": [
+        {
+          "name": "system0.0"
+        },
+                {
+          "name": "ethernet-1/1.0"
+        },                {
+          "name": "ethernet-1/2.0"
+        }              ],
+      "protocols": {
+        "bgp": {
+          "admin-state": "enable",
+          "autonomous-system": 4200000100,
+          "router-id": "10.0.0.14",
+          "afi-safi": [
+            {
+              "afi-safi-name": "ipv4-unicast",
+              "admin-state": "enable"
+            }
+          ],
+          "dynamic-neighbors": {
+            "interface": [
+                            {
+                "interface-name": "ethernet-1/1.0",
+                "peer-group": "underlay",
+                "allowed-peer-as": [4200000111]
+              },                            {
+                "interface-name": "ethernet-1/2.0",
+                "peer-group": "underlay",
+                "allowed-peer-as": [4200000112]
+              }                          ]
+          },
+          "group": [
+            {
+              "group-name": "underlay",
+              "admin-state": "enable",
+              "export-policy": "system-loopbacks-policy",
+              "import-policy": "system-loopbacks-policy"
+            }
+          ]
+        }
+      },
+      "ip-forwarding": {
+        "receive-ipv4-check": false
+      }
+    }
+  ]
+}
