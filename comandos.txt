@@ -7,14 +7,21 @@ ansible-playbook -i netbox_inventory.yml playbook.yml
 / show network-instance default route-table
 / show network-instance default protocols bgp neighbor
 
+LEAF-11
+/ show network-instance vrf-1 bridge-table mac-table all
+/ show network-instance vrf-2 bridge-table mac-table all
 
+mt1 
+ping 192.168.1.2  --> Ping para o mt2
+ping 192.168.2.3  --> Ping para o mt3
 
+mt2
+ping 192.168.1.1  --> Ping para o mt1
+ping 192.168.2.3  --> Ping para o mt3 --> Falha pq o mt2 n está no servico2
 
-
-
-
-
-
+mt3
+ping 192.168.1.1 --> ping mt1 servico1 --> Falha pq mt3 so está no servico2
+ping 192.168.2.1 --> Ping mt1 servico2
 
 
 
