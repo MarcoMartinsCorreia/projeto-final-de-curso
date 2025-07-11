@@ -8,9 +8,11 @@ all:
     linux:
       hosts:
         clab-leirt-topology-mt1:
-          ansible_host: 172.30.20.2
-        clab-leirt-topology-mt2:
           ansible_host: 172.30.20.3
+        clab-leirt-topology-mt2:
+          ansible_host: 172.30.20.2
+        clab-leirt-topology-mt3:
+          ansible_host: 172.30.20.4
     nokia_srlinux:
       vars:
         ansible_network_os: nokia.srlinux.srlinux
@@ -21,10 +23,12 @@ all:
         ansible_password: NokiaSrl1!
       hosts:
         clab-leirt-topology-lf-11:
-          ansible_host: 172.30.20.12
+          ansible_host: 172.30.20.11
         clab-leirt-topology-lf-12:
-          ansible_host: 172.30.20.13
-        clab-leirt-topology-sp-13:
-          ansible_host: 172.30.20.14
-        clab-leirt-topology-sp-14:
+          ansible_host: 172.30.20.12
+        clab-leirt-topology-lf-15:
           ansible_host: 172.30.20.15
+        clab-leirt-topology-sp-13:
+          ansible_host: 172.30.20.13
+        clab-leirt-topology-sp-14:
+          ansible_host: 172.30.20.14

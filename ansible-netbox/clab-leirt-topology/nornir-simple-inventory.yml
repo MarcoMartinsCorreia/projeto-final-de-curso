@@ -3,29 +3,39 @@ mt1:
     username: 
     password: 
     platform: linux
-    hostname: 172.30.20.2
+    hostname: 172.30.20.3
 mt2:
     username: 
     password: 
     platform: linux
-    hostname: 172.30.20.3
+    hostname: 172.30.20.2
+mt3:
+    username: 
+    password: 
+    platform: linux
+    hostname: 172.30.20.4
 lf-11:
     username: admin
     password: NokiaSrl1!
     platform: nokia_srlinux
-    hostname: 172.30.20.12
+    hostname: 172.30.20.11
 lf-12:
     username: admin
     password: NokiaSrl1!
     platform: nokia_srlinux
-    hostname: 172.30.20.13
-sp-13:
-    username: admin
-    password: NokiaSrl1!
-    platform: nokia_srlinux
-    hostname: 172.30.20.14
-sp-14:
+    hostname: 172.30.20.12
+lf-15:
     username: admin
     password: NokiaSrl1!
     platform: nokia_srlinux
     hostname: 172.30.20.15
+sp-13:
+    username: admin
+    password: NokiaSrl1!
+    platform: nokia_srlinux
+    hostname: 172.30.20.13
+sp-14:
+    username: admin
+    password: NokiaSrl1!
+    platform: nokia_srlinux
+    hostname: 172.30.20.14

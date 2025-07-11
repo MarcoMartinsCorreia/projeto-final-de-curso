@@ -56,6 +56,24 @@
           }
         }
       ]
+    },        {
+      "name": "ethernet-1/3",
+      "description": "ethernet-1/3 interface on clab-leirt-topology-sp-14 node",
+      "admin-state": "enable",
+      "subinterface": [
+        {
+          "index": 0,
+          "admin-state": "enable",
+          "ipv6": {
+            "admin-state": "enable",
+            "router-advertisement": {
+              "router-role": {
+                "admin-state": "enable"
+              }
+            }
+          }
+        }
+      ]
     }      ],
 
   "routing-policy": {
@@ -99,6 +117,8 @@
           "name": "ethernet-1/1.0"
         },                {
           "name": "ethernet-1/2.0"
+        },                {
+          "name": "ethernet-1/3.0"
         }              ],
       "protocols": {
         "bgp": {
@@ -121,6 +141,10 @@
                 "interface-name": "ethernet-1/2.0",
                 "peer-group": "underlay",
                 "allowed-peer-as": [4200000112]
+              },                            {
+                "interface-name": "ethernet-1/3.0",
+                "peer-group": "underlay",
+                "allowed-peer-as": [4200000115]
               }                          ]
           },
           "group": [

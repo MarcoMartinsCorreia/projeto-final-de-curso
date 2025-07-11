@@ -20,6 +20,36 @@
           Authorization: "Token {{ netbox_token }}"
   register: vrfs
 
+- name: 2.1 - GET ALL DEVICES
+  uri:
+      url: "{{ netbox_url }}/api/dcim/devices/?tag=LEIRT"
+      method: GET
+      return_content: yes
+      headers:
+          accept: "application/json"
+          Authorization: "Token {{ netbox_token }}"
+  register: all_devices
+
+- name: 2.2 - GET DEVICES
+  uri:
+      url: "{{ netbox_url }}/api/dcim/devices/?name={{ inventory_hostname }}"
+      method: GET
+      return_content: yes
+      headers:
+          accept: "application/json"
+          Authorization: "Token {{ netbox_token }}"
+  register: devices
+
+- name: 2.3 - GET INTERFACES OF DEVICES
+  uri:
+      url: "{{ netbox_url }}/api/dcim/interfaces/?device={{ inventory_hostname }}&limit=0"
+      method: GET
+      return_content: yes
+      headers:
+          accept: "application/json"
+          Authorization: "Token {{ netbox_token }}"
+  register: interfaces
+
 - name: 3 - GET L2VPNS
   uri:
       url: "{{ netbox_url }}/api/vpn/l2vpns/?tag=LEIRT"

@@ -9,110 +9,83 @@
               "group-name": "ibgp-overlay",
               "peer-as": "65535",
               "afi-safi": [
-                {
-                  "afi-safi-name": "ipv4-unicast",
-                  "admin-state": "disable"
-                },
-                {
-                  "afi-safi-name": "evpn",
-                  "admin-state": "enable"
-                }
+                { "afi-safi-name": "ipv4-unicast", "admin-state": "disable" },
+                { "afi-safi-name": "evpn", "admin-state": "enable" }
               ],
-              "timers": {
-                "minimum-advertisement-interval": "1"
-              },
-              "local-as": {
-                "as-number": "65535"
-              }
+              "timers": { "minimum-advertisement-interval": "1" },
+              "local-as": { "as-number": "65535" }
             }
           ],
-          "neighbor": [
-                        {
+          "neighbor": [{
               "peer-address": "10.0.0.13",
               "peer-group": "ibgp-overlay",
-              "transport": {
-                "local-address": "10.0.0.11"
-              }
-            },                        {
+              "transport": { "local-address": "10.0.0.11" }
+            },{
               "peer-address": "10.0.0.14",
               "peer-group": "ibgp-overlay",
-              "transport": {
-                "local-address": "10.0.0.11"
-              }
-            }                        
-          ]
+              "transport": { "local-address": "10.0.0.11" }
+            }          ]
         }
       }
-    },
-    {
-      "name": "vrf-1",
-      "type": "mac-vrf",
-      "admin-state": "enable",
-      "interface": [
-        {
-          "name": "ethernet-1/49.0"
+    },{
+        "name": "vrf-1",
+        "type": "mac-vrf",
+        "admin-state": "enable",
+        "interface": [ { "name": "ethernet-1/49.1" } ],
+        "vxlan-interface": [ { "name": "vxlan1.1" } ],
+        "protocols": {
+          "bgp-evpn": { "bgp-instance": [ { "id": 1, "admin-state": "enable", "vxlan-interface": "vxlan1.1", "evi": 111 } ] },
+          "bgp-vpn": { "bgp-instance": [ { "id": 1, "route-target": { "export-rt": "target:65535:111", "import-rt": "target:65535:111" } } ] }
         }
-      ],
-      "vxlan-interface": [
-        {
-          "name": "vxlan1.1"
+      },{
+        "name": "vrf-2",
+        "type": "mac-vrf",
+        "admin-state": "enable",
+        "interface": [ { "name": "ethernet-1/49.2" } ],
+        "vxlan-interface": [ { "name": "vxlan1.2" } ],
+        "protocols": {
+          "bgp-evpn": { "bgp-instance": [ { "id": 1, "admin-state": "enable", "vxlan-interface": "vxlan1.2", "evi": 222 } ] },
+          "bgp-vpn": { "bgp-instance": [ { "id": 1, "route-target": { "export-rt": "target:65535:222", "import-rt": "target:65535:222" } } ] }
         }
-      ],
-      "protocols": {
-        "bgp-evpn": {
-          "bgp-instance": [
-            {
-              "id": 1,
-              "admin-state": "enable",
-              "vxlan-interface": "vxlan1.1",
-              "evi": 111
-            }
-          ]
-        },
-        "bgp-vpn": {
-          "bgp-instance": [
-            {
-              "id": 1,
-              "route-target": {
-                "export-rt": "target:65535:111",
-                "import-rt": "target:65535:111"
-              }
-            }
-          ]
-        }
-      }
-    }
-  ],
-  "interface": [
-    {
+      }  ],
+  "interface": [{
       "name": "ethernet-1/49",
       "vlan-tagging": true,
-      "subinterface": [
-        {
-          "index": 0,
+      "subinterface": [{
+          "index": 1,
           "type": "bridged",
           "admin-state": "enable",
           "vlan": {
             "encap": {
-              "untagged": {}
+                            "single-tagged": {
+                "vlan-id": 1
+              }
             }
           }
-        }
-      ]
-    }
-  ],
-  "tunnel-interface": [
-    {
+        },{
+          "index": 2,
+          "type": "bridged",
+          "admin-state": "enable",
+          "vlan": {
+            "encap": {
+                            "single-tagged": {
+                "vlan-id": 2
+              }
+            }
+          }
+        }      ]
+    }  ],
+  "tunnel-interface": [{
       "name": "vxlan1",
-      "vxlan-interface": [
-        {
+      "vxlan-interface": [{
           "index": 1,
           "type": "bridged",
-          "ingress": {
-            "vni": 1
-          }
-        }
-      ]
+          "ingress": { "vni": 1 }
+        },{
+          "index": 2,
+          "type": "bridged",
+          "ingress": { "vni": 2 }
+        }      ]
     }
   ]
 }

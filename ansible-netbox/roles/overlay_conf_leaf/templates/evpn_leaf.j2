@@ -1,6 +1,18 @@
-{% set ethernet = (l2vpn_terminations.json.results | selectattr("assigned_object.name", "search", "^ethernet") | map(attribute="assigned_object.name") | list | first) %}
-{% set vxlan = (l2vpn_terminations.json.results | selectattr("assigned_object.name", "search", "^vxlan") | map(attribute="assigned_object.name") | list | first) %}
-{% set ibgp_asn = (asns.json.results | selectattr("description", "search", "ibgp overlay leirt") | map(attribute="asn") | list | first) %}
+
+{%- set ibgp_asn = (asns.json.results | selectattr("description", "search", "ibgp overlay leirt") | map(attribute="asn") | list | first) -%}
+{%- set current_device_name = devices.json.results[0].name -%}
+
+{%- set active_access_vlans = [] -%}
+{%- for iface in interfaces.json.results -%}
+  {%- if iface.device.name == current_device_name and iface.mode and iface.mode.value == 'tagged' and iface.tagged_vlans -%}
+    {%- for vlan in iface.tagged_vlans -%}
+      {%- set full_vlan_obj = (vlans.json.results | selectattr('id', 'equalto', vlan.id) | first) -%}
+      {%- if full_vlan_obj and full_vlan_obj.id not in active_access_vlans | map(attribute='id') -%}
+        {%- set _ = active_access_vlans.append(full_vlan_obj) -%}
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endif -%}
+{%- endfor -%}
 {
   "network-instance": [
     {
@@ -12,106 +24,94 @@
               "group-name": "ibgp-overlay",
               "peer-as": "{{ ibgp_asn }}",
               "afi-safi": [
-                {
-                  "afi-safi-name": "ipv4-unicast",
-                  "admin-state": "disable"
-                },
-                {
-                  "afi-safi-name": "evpn",
-                  "admin-state": "enable"
-                }
+                { "afi-safi-name": "ipv4-unicast", "admin-state": "disable" },
+                { "afi-safi-name": "evpn", "admin-state": "enable" }
               ],
-              "timers": {
-                "minimum-advertisement-interval": "1"
-              },
-              "local-as": {
-                "as-number": "{{ ibgp_asn }}"
-              }
+              "timers": { "minimum-advertisement-interval": "1" },
+              "local-as": { "as-number": "{{ ibgp_asn }}" }
             }
           ],
           "neighbor": [
-            {% for device in all_devices.json.results if device.role.display == "spine" %}
+            {%- for device in all_devices.json.results if device.role.display == "spine" -%}
             {
-              "peer-address": "{{device.custom_fields.Router_ID}}",
+              "peer-address": "{{ device.custom_fields.Router_ID }}",
               "peer-group": "ibgp-overlay",
-              "transport": {
-                "local-address": "{{ devices.json.results[0].custom_fields.Router_ID }}"
-              }
-            }{% if not loop.last %},{% endif %}
-            {% endfor %}
-            
-          ]
-        }
-      }
-    },
-    {
-      "name": "{{vrfs.json.results[0].display}}",
-      "type": "mac-vrf",
-      "admin-state": "enable",
-      "interface": [
-        {
-          "name": "{{ethernet}}.0"
-        }
-      ],
-      "vxlan-interface": [
-        {
-          "name": "{{vxlan}}.1"
-        }
-      ],
-      "protocols": {
-        "bgp-evpn": {
-          "bgp-instance": [
-            {
-              "id": 1,
-              "admin-state": "enable",
-              "vxlan-interface": "{{vxlan}}.1",
-              "evi": {{l2vpns.json.results[0].identifier}}
+              "transport": { "local-address": "{{ devices.json.results[0].custom_fields.Router_ID }}" }
             }
-          ]
-        },
-        "bgp-vpn": {
-          "bgp-instance": [
-            {
-              "id": 1,
-              "route-target": {
-                "export-rt": "target:{{vrfs.json.results[0].export_targets[0].display}}",
-                "import-rt": "target:{{vrfs.json.results[0].import_targets[0].display}}"
-              }
-            }
+            {%- if not loop.last %},{% endif -%}
+            {%- endfor %}
           ]
         }
       }
     }
+    {%- if active_access_vlans -%},{% endif -%}
+    {%- set vlans_with_service = active_access_vlans | selectattr('custom_fields.bound_l2vpn') | list -%}
+    {%- for vlan in vlans_with_service -%}
+    {%- set l2vpn = (l2vpns.json.results | selectattr('id', 'equalto', vlan.custom_fields.bound_l2vpn.id) | first) -%}
+    {%- if l2vpn -%}
+      {%- set found_vrf = namespace(name=l2vpn.name) -%}{%- for vrf in vrfs.json.results -%}{%- if vrf.export_targets and vrf.export_targets[0].name == l2vpn.export_targets[0].name -%}{%- set found_vrf.name = vrf.name -%}{%- endif -%}{%- endfor -%}
+      {%- set access_port_name = namespace(name=None) -%}{%- for iface in interfaces.json.results -%}{%- if iface.tagged_vlans and vlan.id in (iface.tagged_vlans | map(attribute='id')) -%}{%- set access_port_name.name = iface.name -%}{%- endif -%}{%- endfor -%}
+      {
+        "name": "{{ found_vrf.name }}",
+        "type": "mac-vrf",
+        "admin-state": "enable",
+        "interface": [ { "name": "{{ access_port_name.name }}.{{ vlan.vid }}" } ],
+        "vxlan-interface": [ { "name": "vxlan1.{{ l2vpn.custom_fields.vni_vlan.vid }}" } ],
+        "protocols": {
+          "bgp-evpn": { "bgp-instance": [ { "id": 1, "admin-state": "enable", "vxlan-interface": "vxlan1.{{ l2vpn.custom_fields.vni_vlan.vid }}", "evi": {{ l2vpn.identifier }} } ] },
+          "bgp-vpn": { "bgp-instance": [ { "id": 1, "route-target": { "export-rt": "target:{{ l2vpn.export_targets[0].name }}", "import-rt": "target:{{ l2vpn.import_targets[0].name }}" } } ] }
+        }
+      }
+      {%- if not loop.last %},{% endif -%}
+    {%- endif -%}
+    {%- endfor %}
   ],
   "interface": [
+    {%- set access_ifaces_for_loop = interfaces.json.results | selectattr('device.name', 'equalto', current_device_name) | selectattr('mode') | selectattr('mode.value', 'equalto', 'tagged') | selectattr('tagged_vlans') | list -%}
+    {%- for iface in access_ifaces_for_loop -%}
     {
-      "name": "{{ethernet}}",
+      "name": "{{ iface.name }}",
       "vlan-tagging": true,
       "subinterface": [
+        {%- for vlan in iface.tagged_vlans -%}
         {
-          "index": 0,
+          "index": {{ vlan.vid }},
           "type": "bridged",
           "admin-state": "enable",
           "vlan": {
             "encap": {
-              "untagged": {}
+              "single-tagged": {
+                "vlan-id": {{ vlan.vid }}
+              }
             }
           }
         }
+        {%- if not loop.last %},{% endif -%}
+        {%- endfor %}
       ]
     }
+    {%- if not loop.last %},{% endif -%}
+    {%- endfor %}
   ],
   "tunnel-interface": [
     {
-      "name": "{{vxlan}}",
+      "name": "vxlan1",
       "vxlan-interface": [
+        {%- set active_l2vpns_for_loop = [] -%}
+        {%- for vlan in active_access_vlans if vlan.custom_fields.bound_l2vpn -%}
+          {%- set l2vpn_obj = (l2vpns.json.results | selectattr('id', 'equalto', vlan.custom_fields.bound_l2vpn.id) | first) -%}
+          {%- if l2vpn_obj and l2vpn_obj not in active_l2vpns_for_loop -%}
+            {%- set _ = active_l2vpns_for_loop.append(l2vpn_obj) -%}
+          {%- endif -%}
+        {%- endfor -%}
+        {%- for l2vpn in active_l2vpns_for_loop -%}
         {
-          "index": 1,
+          "index": {{ l2vpn.custom_fields.vni_vlan.vid }},
           "type": "bridged",
-          "ingress": {
-            "vni": {{vlans.json.results[0].vid}}
-          }
+          "ingress": { "vni": {{ l2vpn.custom_fields.vni_vlan.vid }} }
         }
+        {%- if not loop.last %},{% endif -%}
+        {%- endfor %}
       ]
     }
   ]
