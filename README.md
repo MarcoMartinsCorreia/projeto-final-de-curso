@@ -1,4 +1,4 @@
-# Datacenter & Automation Tasks
+# Datacenter Environment & Automation Tasks
 
 This repository contains the automation framework and implementation developed for my **Bachelor’s Final Year Project** in Computer Engineering – Networks and Telecommunications at the **Instituto Superior de Engenharia de Lisboa (ISEL)**.
 
