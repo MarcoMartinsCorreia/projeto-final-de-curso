@@ -6,7 +6,7 @@ This repository contains the automation framework and implementation developed f
 
 ## 📘 Project Overview
 
-This project focuses on **automating network configuration and management tasks** in a datacenter environment, aiming to **eliminate human error**, ensure **consistency**, and increase **operational efficiency**.
+This project focuses on **automating network configuration and management tasks** in a datacenter environment, aiming to **reduce human error**, ensure **consistency**, and increase **operational efficiency**.
 
 The framework integrates:
 - **NetBox** as the *Source of Truth* (SoT) for structured inventory and configuration data.
