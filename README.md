@@ -4,7 +4,7 @@ This repository contains the automation framework and implementation developed f
 
 ---
 
-## 📘 Project Overview
+## Project Overview
 
 This project focuses on **automating network configuration and management tasks** in a datacenter environment, aiming to **reduce human error**, ensure **consistency**, and increase **operational efficiency**.
 
@@ -16,7 +16,7 @@ The framework integrates:
 
 ---
 
-## 🚀 Key Features
+## Key Features
 
 - **Day 0:** Design and modeling of the infrastructure in NetBox.
 - **Day 1:** Automated deployment of the underlay and overlay fabrics with Ansible.
@@ -24,15 +24,15 @@ The framework integrates:
 
 ---
 
-## 📸 Visual Examples
+## Visual Examples
 
-### 📍 Proposed Topology
+### Proposed Topology
 
 ![Leaf-Spine Topology](./images/leaf_spine_topology.png)
 
 *Figure: Example of the implemented leaf-spine topology with Containerlab.*
 
-### ⚙️ Automation Workflow
+### Automation Workflow
 
 ![Automation Workflow](./images/automation_workflow.png)
 
@@ -40,7 +40,7 @@ The framework integrates:
 
 ---
 
-## 🧰 Technologies Used
+## Technologies Used
 
 - **NetBox** – DCIM/IPAM platform used as *Source of Truth*.
 - **Ansible** – Automation engine.
@@ -52,7 +52,7 @@ The framework integrates:
 
 ---
 
-## 📑 Project Structure
+## Project Structure
 
 The project is organised following network automation best practices:
 - **Modeling (Day 0):** Everything starts in NetBox.
@@ -61,7 +61,7 @@ The project is organised following network automation best practices:
 
 ---
 
-## 📄 Final Report
+## Final Report
 
 This repository is linked to the **final report**, which includes all theoretical background, solution architecture, and validated use cases.
 
@@ -69,7 +69,7 @@ For more details, check the [full report](./report.pdf).
 
 ---
 
-## 🚩 Author
+## Author
 
 **Marco Martins Correia**  
 Bachelor’s Degree in Computer Engineering – Networks and Telecommunications  
@@ -77,7 +77,7 @@ Instituto Superior de Engenharia de Lisboa (ISEL)
 
 ---
 
-## 📬 Contact
+## Contact
 
 📧 a49839@alunos.isel.pt 
 
